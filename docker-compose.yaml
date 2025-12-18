@@ -1,0 +1,11 @@
+services:
+  reverse-proxy:
+    container_name: reverse-proxy
+    image: ghcr.io/mimamch/reverse-proxy:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DATABASE_URL=
+      - EMAIL=
