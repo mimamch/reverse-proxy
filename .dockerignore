@@ -1,0 +1,9 @@
+node_modules/
+dist/
+prisma/
+.env
+Dockerfile
+package.json
+package-lock.json
+prisma.config.ts
+.github

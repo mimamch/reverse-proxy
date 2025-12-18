@@ -1,0 +1,18 @@
+package database
+
+import (
+	"log"
+
+	"github.com/mimamch/reverse-proxy/internal/config"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
+
+func ConnectPostgres(cfg *config.Config) *gorm.DB {
+	db, err := gorm.Open(postgres.Open(cfg.DatabaseURL), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Failed to connect to database:", err)
+	}
+
+	return db
+}

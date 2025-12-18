@@ -1,0 +1,13 @@
+{
+  "name": "reverse-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.1",
+  "devDependencies": {
+    "prisma": "^7.1.0"
+  }
+}

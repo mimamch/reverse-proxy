@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Proxy {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  hosts    Hosts[]
+  backends Backend[]
+  headers  Headers[]
+
+  @@map("proxies")
+}
+
+model Hosts {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  host        String
+  force_https Boolean @default(false)
+
+  proxy        Proxy?         @relation(fields: [proxy_id], references: [id], onDelete: Cascade)
+  proxy_id     String?
+  certificates Certificates[]
+
+  @@map("hosts")
+}
+
+model Backend {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  scheme   String
+  host     String
+  port     Int?
+  proxy    Proxy?  @relation(fields: [proxy_id], references: [id], onDelete: Cascade)
+  proxy_id String?
+  enabled  Boolean @default(true)
+
+  @@map("backends")
+}
+
+model Headers {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  key   String
+  value String
+
+  proxy    Proxy?  @relation(fields: [proxy_id], references: [id], onDelete: Cascade)
+  proxy_id String?
+
+  @@map("headers")
+}
+
+model Certificates {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  host_id String
+  host    Hosts  @relation(fields: [host_id], references: [id], onDelete: Cascade)
+
+  cert       String
+  key        String
+  expires_at DateTime
+
+  @@map("certificates")
+}
